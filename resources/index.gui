@@ -1,3 +1,5 @@
 <svg>
   <rect id="background" />
+  <text id="rhr-data" class="rhr-data">{ ... }</text>
+  <text id="hrm-data" class="hrm-data">{ ... }</text>
 </svg>
