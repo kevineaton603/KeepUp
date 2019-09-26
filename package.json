@@ -8,7 +8,7 @@
     "@fitbit/sdk-cli": "^1.6.3"
   },
   "fitbit": {
-    "appUUID": "38dea864-b52d-416b-ab29-d24751ea6145",
+    "appUUID": "d848c846-0fe6-47e4-b630-0490a59f930c",
     "appType": "app",
     "appDisplayName": "No Sleep",
     "iconFile": "resources/icon.png",
