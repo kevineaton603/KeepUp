@@ -1,17 +1,5 @@
-import document from 'document';
-import { HeartRateSensor } from "heart-rate";
-import { user } from "user-profile";
-import { me } from "appbit";
-import {testingView, subjectSelectionView, VTList} from './Interactable';
-import { vibration } from "haptics";
-
-
-function showTestingView(){
-    console.log("Show Testing View");
-    testingView.style.display = "inline";
-    subjectSelectionView.style.display = "none";
-    vibration.start("ring");
-}
+import { testingView, subjectSelectionView, VTList } from './Interactable';
+import showTestingView from './Testing';
 
 function showSubjectSelectionView(){
     console.log("Show Subject Selection View");
@@ -42,13 +30,3 @@ VTList.delegate = {
 
 // VTList.length must be set AFTER VTList.delegate
 VTList.length = NUM_ELEMS;
-
-document.onkeypress = (evt) => {
-    if(evt.key === 'back'){
-        if(testingView.style.display === 'inline'){
-          vibration.stop();
-          showSubjectSelectionView();
-          evt.preventDefault();
-        }
-    }
-}
