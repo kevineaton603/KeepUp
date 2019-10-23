@@ -2,37 +2,53 @@ import document from 'document';
 import { HeartRateSensor } from "heart-rate";
 import { user } from "user-profile";
 import { me } from "appbit";
+import {testingView, subjectSelectionView, VTList} from './Interactable';
+import { vibration } from "haptics";
 
-const restingHeartRate = document.getElementById('rhr-data');
-const heartRateMonitor = document.getElementById('hrm-data');
 
-if (!me.permissions.granted("access_user_profile")) {
-    console.log("We're not allowed to read a users' heart rate!");
+function showTestingView(){
+    console.log("Show Testing View");
+    testingView.style.display = "inline";
+    subjectSelectionView.style.display = "none";
+    vibration.start("ring");
 }
 
-if (user) {
-    console.log((user.restingHeartRate || "Unknown") + " BPM");
-    restingHeartRate.text = `${(user.restingHeartRate || "Unknown")} BPM`
-} else {
-    restingHeartRate.style.display = "none";
+function showSubjectSelectionView(){
+    console.log("Show Subject Selection View");
+    testingView.style.display = "none";
+    subjectSelectionView.style.display = "inline";
 }
 
-if (HeartRateSensor) {
-    const hrm = new HeartRateSensor({ frequency: 1 });
-    hrm.addEventListener("reading", () => {
-        heartRateMonitor.text = `${hrm.heartRate} BPM`
-        console.log(JSON.stringify({
-        heartRate: hrm.heartRate ? hrm.heartRate : 0
-        }));
-    });
-    hrm.start();
-} else {
-    hrmLabel.style.display = "none";
-    hrmData.style.display = "none";
+let NUM_ELEMS = 10;
+
+VTList.delegate = {
+  getTileInfo: function(index) {
+    return {
+      type: "my-pool",
+      value: "Subject ",
+      index: index
+    };
+  },
+  configureTile: function(tile, info) {
+    if (info.type == "my-pool") {
+      tile.getElementById("text").text = `${info.value} ${info.index}`;
+      let touch = tile.getElementById("touch-me");
+      touch.onclick = evt => {
+        showTestingView();
+      };
+    }
+  }
+};
+
+// VTList.length must be set AFTER VTList.delegate
+VTList.length = NUM_ELEMS;
+
+document.onkeypress = (evt) => {
+    if(evt.key === 'back'){
+        if(testingView.style.display === 'inline'){
+          vibration.stop();
+          showSubjectSelectionView();
+          evt.preventDefault();
+        }
+    }
 }
-
-
-
-
-
-console.log('Hello world!');
