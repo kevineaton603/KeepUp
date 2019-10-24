@@ -39,12 +39,14 @@ const showTestingView = (subject, test) => {
 /**
  * Controls functionality of the stop button
  * Once start is set then end can be set.
+ * TODO:
+ * After end is set, send POST request to database
  */
 stopButton.onclick = (evt) => {
     if(start === null);
     else{
         end = new Date();
-        console.log(end - start);
+        console.log("Reaction of ", end - start, " ms");
         // Report Number to Back End
     }
 }
