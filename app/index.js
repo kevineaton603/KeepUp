@@ -1,32 +1,20 @@
-import { testingView, subjectSelectionView, VTList } from './Interactable';
-import showTestingView from './Testing';
+import document from 'document';
+import showSubjectSelectionView from './VTList';
 
-function showSubjectSelectionView(){
-    console.log("Show Subject Selection View");
-    testingView.style.display = "none";
-    subjectSelectionView.style.display = "inline";
+showSubjectSelectionView();
+
+/**
+ * Controls the actions of the button on the right hand
+ * side of the watch
+ */
+document.onkeypress = (evt) => {
+    if(evt.key === 'back'){
+        if(testingView.style.display === 'inline'){
+          showSubjectSelectionView();
+          evt.preventDefault();
+        }
+    }
 }
 
-let NUM_ELEMS = 10;
+console.log("Starting Application");
 
-VTList.delegate = {
-  getTileInfo: function(index) {
-    return {
-      type: "my-pool",
-      value: "Subject ",
-      index: index
-    };
-  },
-  configureTile: function(tile, info) {
-    if (info.type == "my-pool") {
-      tile.getElementById("text").text = `${info.value} ${info.index}`;
-      let touch = tile.getElementById("touch-me");
-      touch.onclick = evt => {
-        showTestingView();
-      };
-    }
-  }
-};
-
-// VTList.length must be set AFTER VTList.delegate
-VTList.length = NUM_ELEMS;

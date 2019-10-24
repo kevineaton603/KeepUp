@@ -1,29 +1,3 @@
-#background {
-  width: 100%;
-  height: 100%;
-  fill: white;
-}
-
-.rhr-data{
-  font-family: System-Regular;
-  fill: white;
-  text-anchor: middle;
-  text-length: 32;
-  font-size: 20;
-  x: 50%;
-  y: $+5;
-}
-
-.hrm-data{
-  font-family: System-Light;
-  fill: yellow;
-  text-anchor: middle;
-  text-length: 64;
-  font-size: 20;
-  x: 50%;
-  y: $;
-}
-
 .tile-list-item {
   height: 80;
 }

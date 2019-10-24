@@ -27,7 +27,10 @@
     </use>
   </svg>
   <svg id="testing-view" display="none">
-    <text id="rhr-data" class="rhr-data">{ ... }</text>
-    <text id="hrm-data" class="hrm-data">{ ... }</text>
+    <svg>
+      <use href="#square-button-neutral" y="$"  id="stop-button" height="100%-2">
+        <set href="#text" attributeName="text-buffer" to="CLICK ME"/>
+      </use>
+    </svg>
   </svg>
 </svg>
