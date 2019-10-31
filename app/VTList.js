@@ -2,6 +2,8 @@ import * as messaging from 'messaging';
 import { testingView, subjectSelectionView, VTList } from './Interactable';
 import showTestingView from './Testing';
 
+let subjects = [];
+
 // Send a message to the peer
 function fetchSubjectData() {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
@@ -25,8 +27,34 @@ messaging.peerSocket.onerror = (err) => {
 // Listen for messages from the companion
 messaging.peerSocket.onmessage = (evt) => {
   if (evt.data) {
-    console.log(evt.data[0]._id);
+    subjects = evt.data;
+    /**
+     * Configures out list view with gui
+     * Pass alongs information to testing
+     * about subject.
+     */
+    VTList.delegate = {
+      getTileInfo(index) {
+        return {
+          type: 'my-pool',
+          subject: subjects[index],
+          index,
+        };
+      },
+      configureTile(tile, {type, subject}) {
+        if (type == 'my-pool') {
+          tile.getElementById('text').text = `${subject.name} ${subject.uuid}`;
+          const touch = tile.getElementById('touch-me');
+          touch.onclick = (evt) => {
+            showTestingView(subject);
+          };
+        }
+      },
+    };
+    // VTList.length must be set AFTER VTList.delegate
+    VTList.length = subjects.length;
   }
+   
 };
 /**
  * Shows The subject selection view
@@ -36,40 +64,5 @@ function showSubjectSelectionView() {
   testingView.style.display = 'none';
   subjectSelectionView.style.display = 'inline';
 }
-
-/**
- * Number of Elements in list
- * TODO:
- * In the full application this number will be controlled
- * By an API call to our database
- */
-const NUM_ELEMS = 4;
-
-/**
- * Configures out list view with gui
- * Pass alongs information to testing
- * about subject.
- */
-VTList.delegate = {
-  getTileInfo(index) {
-    return {
-      type: 'my-pool',
-      value: 'Subject ',
-      index,
-    };
-  },
-  configureTile(tile, info) {
-    if (info.type == 'my-pool') {
-      tile.getElementById('text').text = `${info.value} ${info.index}`;
-      const touch = tile.getElementById('touch-me');
-      touch.onclick = (evt) => {
-        showTestingView(1, info.index);
-      };
-    }
-  },
-};
-
-// VTList.length must be set AFTER VTList.delegate
-VTList.length = NUM_ELEMS;
 
 export default showSubjectSelectionView;
