@@ -1,40 +1,41 @@
 import { vibration } from 'haptics';
 import { testingView, stopButton, subjectSelectionView } from './Interactable';
 
-const timeout = 5000; //Replace with random number
+const timeout = 5000; // Replace with random number
 
 // List of possible vibration patterns
-const vibrationPatterns = ["nudge","nudge-max","confirmation","confirmation-max"];
+const vibrationPatterns = ['nudge', 'nudge-max', 'confirmation', 'confirmation-max'];
 
 let testId = Number();
 let subjectId = Number();
 
-let start = null, end = null;
+let start = null; let
+  end = null;
 
 /**
  * Show Testing View
  * Vibration will be based of number passed
  * to function.
- * @param {Number} subject 
- * @param {Number} test 
+ * @param {Number} subject
+ * @param {Number} test
  */
 const showTestingView = (subject, test) => {
-    console.log("Show Testing View");
-    testingView.style.display = "inline";
-    subjectSelectionView.style.display = "none";
-    
-    testId = test;
-    subjectId = subject;
+  console.log('Show Testing View');
+  testingView.style.display = 'inline';
+  subjectSelectionView.style.display = 'none';
 
-    /**
+  testId = test;
+  subjectId = subject;
+
+  /**
      * Sets Timeout until the vibration occurs
      * Executes code after timeout
      */
-    setTimeout(() => {
-        start = new Date();
-        vibration.start(vibrationPatterns[testId]);
-    }, timeout);
-}
+  setTimeout(() => {
+    start = new Date();
+    vibration.start(vibrationPatterns[testId]);
+  }, timeout);
+};
 
 /**
  * Controls functionality of the stop button
@@ -43,12 +44,12 @@ const showTestingView = (subject, test) => {
  * After end is set, send POST request to database
  */
 stopButton.onclick = (evt) => {
-    if(start === null);
-    else{
-        end = new Date();
-        console.log("Reaction of ", end - start, " ms");
-        // Report Number to Back End
-    }
-}
+  if (start === null);
+  else {
+    end = new Date();
+    console.log('Reaction of ', end - start, ' ms');
+    // Report Number to Back End
+  }
+};
 
 export default showTestingView;
