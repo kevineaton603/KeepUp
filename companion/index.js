@@ -30,10 +30,10 @@ async function testSubmission(subject, test) {
 messaging.peerSocket.onmessage = function (evt) {
   if (evt.data) {
     const { command } = evt.data;
-    if (command == 'getData') {
+    if (command === 'getData') {
       // The device requested weather data
       getSubjectData();
-    } else if (command == 'submitTest') {
+    } else if (command === 'submitTest') {
       const { subject, test } = evt.data;
       testSubmission(subject, test);
     }

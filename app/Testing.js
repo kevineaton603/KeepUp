@@ -6,14 +6,15 @@ const timeout = 5000; // Replace with random number
 
 // List of possible vibration patterns
 const vibrationPatterns = {
-  a: ['ring', 'confirmation-max'], 
-  b: [ 'confirmation-max', 'ring'],
+  a: ['ring', 'confirmation-max'],
+  b: ['confirmation-max', 'ring'],
 };
 
-let start = null; 
+let start = null;
 let end = null;
 
 let subject = {};
+let pattern = '';
 
 /**
  * Show Testing View
@@ -26,15 +27,32 @@ const showTestingView = (sub) => {
   testingView.style.display = 'inline';
   subjectSelectionView.style.display = 'none';
   subject = sub;
-  console.log(subject._id);
   /**
    * Sets Timeout until the vibration occurs
    * Executes code after timeout
    */
   setTimeout(() => {
     start = new Date();
-    vibration.start(vibrationPatterns[subject.group][subject.tests.length]);
+    pattern = vibrationPatterns[subject.group][subject.tests.length];
+    vibration.start(pattern);
   }, timeout);
+};
+
+// Send a message to the peer
+function postTest(time) {
+  // Listen for the onopen event
+  messaging.peerSocket.onopen = () => {
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      // Send the data to peer as a message
+      messaging.peerSocket.send({ command: 'submitTest', subject, test: { pattern, time } });
+    }
+  };
+}
+
+// Listen for the onerror event
+messaging.peerSocket.onerror = (err) => {
+  // Handle any errors
+  console.log(`Connection error: ${err.code} - ${err.message}`);
 };
 
 /**
@@ -46,36 +64,10 @@ const showTestingView = (sub) => {
 stopButton.onclick = (evt) => {
   if (start === null);
   else {
+    console.log('Reaction of ', end - start, ' ms');
     vibration.stop();
     end = new Date();
-    console.log('Reaction of ', end - start, ' ms');
-  }
-};
-
-// Send a message to the peer
-function postTest(pattern, time) {
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    // Send the data to peer as a message
-    messaging.peerSocket.send({ command: 'submitTest',  });
-  }
-}
-
-// Listen for the onopen event
-messaging.peerSocket.onopen = () => {
-  // Ready to send or receive messages
-  fetchSubjectData();
-};
-
-// Listen for the onerror event
-messaging.peerSocket.onerror = (err) => {
-  // Handle any errors
-  console.log(`Connection error: ${err.code} - ${err.message}`);
-};
-
-// Listen for messages from the companion
-messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data) {
-    console.log(evt.data[0]._id);
+    postTest(end - start);
   }
 };
 
