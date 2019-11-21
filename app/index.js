@@ -1,6 +1,9 @@
 import document from 'document';
+import { display } from 'display';
 import showSubjectSelectionView from './VTList';
 import { testingView } from './Interactable';
+
+display.autoOff = false;
 
 showSubjectSelectionView();
 

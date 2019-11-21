@@ -8,3 +8,8 @@
   font-family: System-Regular;
   fill: "white";
 }
+
+#messaging-text{
+  text-length: 128;
+  fill: "white";
+}

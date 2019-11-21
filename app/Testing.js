@@ -27,6 +27,8 @@ const showTestingView = (sub) => {
   testingView.style.display = 'inline';
   subjectSelectionView.style.display = 'none';
   subject = sub;
+  start = null;
+  end = null;
   /**
    * Sets Timeout until the vibration occurs
    * Executes code after timeout
@@ -40,13 +42,9 @@ const showTestingView = (sub) => {
 
 // Send a message to the peer
 function postTest(time) {
-  // Listen for the onopen event
-  messaging.peerSocket.onopen = () => {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-      // Send the data to peer as a message
-      messaging.peerSocket.send({ command: 'submitTest', subject, test: { pattern, time } });
-    }
-  };
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    messaging.peerSocket.send({ command: 'submitTest', subject, test: { pattern, time } });
+  }
 }
 
 // Listen for the onerror event
@@ -64,7 +62,7 @@ messaging.peerSocket.onerror = (err) => {
 stopButton.onclick = (evt) => {
   if (start === null);
   else {
-    console.log('Reaction of ', end - start, ' ms');
+    console.log(`${end - start}  ms`);
     vibration.stop();
     end = new Date();
     postTest(end - start);

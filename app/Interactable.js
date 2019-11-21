@@ -7,5 +7,5 @@ const VTList = document.getElementById('my-list');
 const stopButton = document.getElementById('stop-button');
 
 export {
-  testingView, subjectSelectionView, VTList, stopButton,
+  testingView, subjectSelectionView, VTList, stopButton 
 };

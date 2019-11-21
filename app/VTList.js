@@ -1,5 +1,7 @@
 import * as messaging from 'messaging';
-import { testingView, subjectSelectionView, VTList } from './Interactable';
+import {
+  testingView, subjectSelectionView, VTList,
+} from './Interactable';
 import showTestingView from './Testing';
 
 let subjects = [];
@@ -11,7 +13,6 @@ function fetchSubjectData() {
     messaging.peerSocket.send({ command: 'getData' });
   }
 }
-
 // Listen for the onopen event
 messaging.peerSocket.onopen = () => {
   // Ready to send or receive messages
@@ -41,8 +42,9 @@ messaging.peerSocket.onmessage = (evt) => {
           index,
         };
       },
-      configureTile(tile, {type, subject}) {
+      configureTile(tile, { type, subject }) {
         if (type == 'my-pool') {
+          // eslint-disable-next-line no-param-reassign
           tile.getElementById('text').text = `${subject.name} ${subject.uuid}`;
           const touch = tile.getElementById('touch-me');
           touch.onclick = (evt) => {
@@ -54,7 +56,6 @@ messaging.peerSocket.onmessage = (evt) => {
     // VTList.length must be set AFTER VTList.delegate
     VTList.length = subjects.length;
   }
-   
 };
 /**
  * Shows The subject selection view
@@ -63,6 +64,7 @@ function showSubjectSelectionView() {
   console.log('Show Subject Selection View');
   testingView.style.display = 'none';
   subjectSelectionView.style.display = 'inline';
+  fetchSubjectData();
 }
 
 export default showSubjectSelectionView;

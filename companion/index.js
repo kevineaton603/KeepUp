@@ -19,10 +19,23 @@ async function getSubjectData() {
 }
 
 async function testSubmission(subject, test) {
-  const response = await fetch('https://keep-up-server.herokuapp.com/subjects/test', { method: 'POST', body: { subject, test } });
-  const data = await response.json();
-  const { subjects } = data;
-  returnSubjectData(subjects);
+  console.log('Test Submission');
+  try {
+    const response = await fetch('https://keep-up-server.herokuapp.com/subjects/tests',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subject,
+          test,
+        }),
+
+      });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
@@ -30,11 +43,12 @@ async function testSubmission(subject, test) {
 messaging.peerSocket.onmessage = function (evt) {
   if (evt.data) {
     const { command } = evt.data;
-    if (command === 'getData') {
+    if (command == 'getData') {
       // The device requested weather data
       getSubjectData();
-    } else if (command === 'submitTest') {
+    } else if (command == 'submitTest') {
       const { subject, test } = evt.data;
+      console.log(subject._id, test.time);
       testSubmission(subject, test);
     }
   }
