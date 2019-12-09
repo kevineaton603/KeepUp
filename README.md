@@ -23,6 +23,10 @@ For further instructions:
 
 [Fitbit OS Command Line Interface](https://www.youtube.com/watch?time_continue=68&v=WkCKycDUgmU)
 
+### Other Notes
+
+Application works best when running in development environment. A real Fitbit and Phone are required to use test this application as sensing the vibraiton and communication with the back-server and database.
+
 ## Application Description
 
 Current State: Prototype
